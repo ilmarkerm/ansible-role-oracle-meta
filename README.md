@@ -1,7 +1,10 @@
-Role Name
+oracle-meta
 =========
 
 This role maintaims metadata for Oracle RDBMS home management roles. Like what are the configured RDBMS homes and what they should contain.
+
+This role is part of full Oracle RDBMS home management solution:
+https://github.com/ilmarkerm/ansible-oracle-home-mgmt
 
 Requirements
 ------------
