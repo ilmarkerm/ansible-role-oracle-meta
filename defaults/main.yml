@@ -11,11 +11,21 @@ oracle_inventory_location: /u01/app/oraInventory
 # Shared location within a cluster where common sqlnet.ora and tnsnames.ora are located
 oracle_tnsnames_common_path: /u02/app/oracle
 
+# Should sqlnet.ora and tnsnames.ora be linked from a common path to $ORACLE_HOME/network/admin
+oracle_link_tns: True
+
 # Shared location mounted on all database hosts where database installers and patch files are unzipped
 # all installer and patch locations are relative to these directories
 oracle_installer_base: /nfs/install/base_installers
 oracle_patch_base: /nfs/install/patch
 
+# PATH for oracle OS user that does not include $ORACLE_HOME
+oracle_os_common_path: /usr/lib64/qt-3.3/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/home/oracle/bin
+
+# oracle_meta_generic_groups should contain all hostgroups in Ansible inventory file, that are NOT clusters. For example groups that contain clusters.
+oracle_meta_generic_groups:
+  - non-prod
+  - production
 
 # Calculated variables
 oracle_meta_sqlnet_ora: "{{ tnsnames_common_path }}/sqlnet.ora"
@@ -23,6 +33,11 @@ oracle_meta_tnsnames_ora: "{{ tnsnames_common_path }}/tnsnames.ora"
 oracle_meta_install_base: "{{ oracle_base }}/product"
 oracle_home: "{{ oracle_meta_install_base }}/{{ oracle_db_version }}"
 oracle_meta_db_owner_home: /home/{{ oracle_db_owner }}
+
+# Cluser memberships
+oracle_meta_active_group: "{{ hostvars[inventory_hostname]['group_names'] | difference(oracle_meta_generic_groups) | join('') }}"
+oracle_clusterhosts: "{{ groups[oracle_meta_active_group] | map('regex_replace', '^([a-zA-Z0-9\\-_]+)\\..+$', '\\1') | list }}"
+oracle_clusterhosts_fqdn: "{{ groups[oracle_meta_active_group] | list }}"
 
 # Configured RDBMS homes, you need to make a copy and redefine of this structure as part of your playbook, here it is just an example 
 oracle_db_versions:
