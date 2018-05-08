@@ -28,8 +28,8 @@ oracle_meta_generic_groups:
   - production
 
 # Calculated variables
-oracle_meta_sqlnet_ora: "{{ tnsnames_common_path }}/sqlnet.ora"
-oracle_meta_tnsnames_ora: "{{ tnsnames_common_path }}/tnsnames.ora"
+oracle_meta_sqlnet_ora: "{{ oracle_tnsnames_common_path }}/sqlnet.ora"
+oracle_meta_tnsnames_ora: "{{ oracle_tnsnames_common_path }}/tnsnames.ora"
 oracle_meta_install_base: "{{ oracle_base }}/product"
 oracle_home: "{{ oracle_meta_install_base }}/{{ oracle_db_version }}"
 oracle_meta_db_owner_home: /home/{{ oracle_db_owner }}
